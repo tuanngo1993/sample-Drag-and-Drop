@@ -9,12 +9,14 @@ class ProjectItem {
 	}
 
 	connectDrag() {
-		this.projectElement.addEventListener("dragstart", (e) => {
+		this.projectElement.addEventListener("dragstart", e => {
+			// Append a data to a draggable element
 			e.dataTransfer.setData("text/plain", this.id);
+			// Define what kind of D&D perform
 			e.dataTransfer.effectAllowed = "move";
 		});
 
-		this.projectElement.addEventListener("dragend", (e) => {
+		this.projectElement.addEventListener("dragend", e => {
 			// Code to style dropped item or...
 		});
 	}
@@ -55,21 +57,25 @@ class ProjectItem {
 
 	switchHandler() {
 		const projectListEl = this.projectElement.parentNode;
+		const switchButton = this.projectElement.querySelector(`button:last-of-type`);
+		const tooltip = this.projectElement.querySelector(".card");
 		let projectList;
+		// Check to detect a new parent of element and change text of button
 		if (projectListEl.parentNode.id === "active-projects") {
 			projectList = document.querySelector(`#finished-projects ul`);
+			switchButton.textContent = "Activate";
 		} else {
 			projectList = document.querySelector(`#active-projects ul`);
+			switchButton.textContent = "Finish";
 		}
+		// Addd element to a new parent
 		projectList.appendChild(this.projectElement);
-		const tooltip = this.projectElement.querySelector(".card");
+		// Remove tooltips of element
 		tooltip?.parentNode.removeChild(tooltip);
 	}
 
 	switchButton() {
-		const switchButton = this.projectElement.querySelector(
-			`button:last-of-type`
-		);
+		const switchButton = this.projectElement.querySelector(`button:last-of-type`);
 		this.projectElement.parentNode.onscroll = () => {
 			const items = this.projectElement.parentNode.querySelectorAll("li");
 			for (const item of items) {
@@ -97,28 +103,34 @@ class ProjectList {
 	connectDroppable() {
 		const list = document.querySelector(`#${this.type}-projects ul`);
 
-		list.addEventListener("dragenter", (e) => {
+		// Should have this dragover event to call method preventDefault
+		list.addEventListener("dragover", e => {
+			// Check if the draggable element exists
 			if (e.dataTransfer.types[0] === "text/plain") {
 				e.preventDefault();
 			}
 			list.parentElement.classList.add("droppable");
 		});
 
-		list.addEventListener("dragover", (e) => {
-			if (e.dataTransfer.types[0] === "text/plain") {
-				e.preventDefault();
-			}
-		});
-
-		list.addEventListener("dragleave", (e) => {
+		list.addEventListener("dragleave", e => {
+			// Check to remove droppable class when draggable moving to a new parent only
 			if (e.relatedTarget.closest && e.relatedTarget.closest(`#${this.type}-projects ul`) !== list) {
 				list.parentElement.classList.remove("droppable");
 			}
 		});
 
-		list.addEventListener("drop", (e) => {
-			event.preventDefault();
+		list.addEventListener("drop", e => {
+			e.preventDefault();
 			const projectId = e.dataTransfer.getData("text/plain");
+			let projectList = e.target.closest(`#${this.type}-projects ul`).querySelectorAll("li");
+			// Prevent from dropping right inside a current parent
+			for (const item of projectList) {
+				if(item.id === projectId) {
+					list.parentElement.classList.remove("droppable");
+					return;
+				}
+			}
+			// Trigger button event instead of creating a new function
 			document
 				.getElementById(projectId)
 				.querySelector("button:last-of-type")
