@@ -1,0 +1,22 @@
+{
+  "name": "dragdrop",
+  "version": "1.0.0",
+  "description": "Drag and Drop Javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tuanngo1993/sample-Drag-and-Drop.git"
+  },
+  "author": "Tuan Ngo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tuanngo1993/sample-Drag-and-Drop/issues"
+  },
+  "homepage": "https://github.com/tuanngo1993/sample-Drag-and-Drop#readme",
+  "devDependencies": {
+    "eslint": "^7.16.0"
+  }
+}
