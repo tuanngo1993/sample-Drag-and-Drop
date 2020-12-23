@@ -8,5 +8,5 @@ module.exports = {
 		path: path.resolve(__dirname, "assets", "scripts"),  // access to where puts the output file
 		publicPath: "assets/scripts/"  // point at exactly direction in case there are multiple bundled files
 	},
-	devtool: "eval-cheap-module-source-map", // generating sourcemap
+	devtool: "cheap-source-map", // generating sourcemap in minimized code
 };
